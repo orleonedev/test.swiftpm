@@ -14,11 +14,8 @@ struct GameView: View {
     @StateObject var gameLogic: GameLogic =  GameLogic.shared
     
     
-    
     var gameScene: GameScene {
         let scene = GameScene()
-        
-//        scene.size = CGSize(width: screenWidth, height: screenHeight)
         scene.scaleMode = .aspectFill
         
         return scene

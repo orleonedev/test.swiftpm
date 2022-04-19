@@ -11,6 +11,7 @@ import SwiftUI
 struct GameOverView: View {
     
     @Binding var currentGameState: GameState
+    var sharedPalette: ColorPalette = ColorPalette.sharedPalette
     
     var body: some View {
         ZStack {
@@ -26,7 +27,7 @@ struct GameOverView: View {
                         .foregroundColor(.black)
                         .font(.title)
                 }
-                .background(Circle().foregroundColor(Color(uiColor: UIColor.orange)).frame(width: 100, height: 100, alignment: .center))
+                .background(Circle().foregroundColor(sharedPalette.secondary).frame(width: GMUnit, height: GMUnit, alignment: .center))
                 
                 Spacer()
                 
@@ -37,7 +38,7 @@ struct GameOverView: View {
                         .foregroundColor(.black)
                         .font(.title)
                 }
-                .background(Circle().foregroundColor(Color(uiColor: UIColor.orange)).frame(width: 100, height: 100, alignment: .center))
+                .background(Circle().foregroundColor(sharedPalette.secondary).frame(width: GMUnit, height: GMUnit, alignment: .center))
                 
                 Spacer()
             }

@@ -11,6 +11,10 @@ class GameLogic: ObservableObject {
     // Single instance of the class
     static let shared: GameLogic = GameLogic()
     
+    var ingredients: [String] = ["🍎","🍐","🍊","🍋","🍌"]
+    var wants: [String] = []
+    var hates: [String] = []
+    
     // Function responsible to set up the game before it starts.
     func setUpGame() {
         

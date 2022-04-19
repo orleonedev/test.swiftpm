@@ -10,6 +10,7 @@ import SwiftUI
 
 enum GameState {
     case mainScreen
+    case preparation
     case playing
     case gameOver
 }
@@ -17,13 +18,13 @@ enum GameState {
 var screenWidth: CGFloat { UIScreen.main.bounds.size.width }
 var screenHeight: CGFloat { UIScreen.main.bounds.size.height }
 
-var measureUnit: CGFloat {screenWidth/5.0}
+var GMUnit: CGFloat {screenWidth/5.0}
 var displayWidth: CGFloat {screenWidth-(screenWidth/5)}
 var displayHeight: CGFloat {screenHeight-(screenHeight/4)}
 
 class ColorPalette:ObservableObject{
     
-    static let shared: ColorPalette = ColorPalette()
+    static let sharedPalette: ColorPalette = ColorPalette()
     
     private enum NumberPal: CaseIterable {
         case first,second

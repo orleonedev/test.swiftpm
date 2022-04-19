@@ -7,25 +7,24 @@
 
 import Foundation
 import SpriteKit
+import SwiftUI
 
 class MenuScene: SKScene {
     
     var lastUpdate: TimeInterval = 0
     
-    var gumi: SKSpriteNode? = SKSpriteNode(texture: SKTexture(imageNamed: "GumiDx"), color: .white, size: CGSize(width: measureUnit, height: measureUnit))
+    var gumi: Gumi? = Gumi()
     
     override func didMove(to view: SKView) {
-        self.backgroundColor = SKColor.gray
+        self.backgroundColor = SKColor.init(red: 0, green: 0.01, blue: 0.1, alpha: 0.9)
         
         if let gumi = gumi {
             
             gumi.name = "gumi"
-            gumi.physicsBody = SKPhysicsBody(circleOfRadius: measureUnit/2)
-            gumi.physicsBody?.affectedByGravity = false
-            gumi.position = view.center
+            gumi.position = CGPoint(x: view.center.x + GMUnit/2, y: view.center.y)
             self.addChild(gumi)
-            let act = SKAction.move(by: CGVector(dx: measureUnit, dy: 0.0), duration: 1.0)
-            gumi.run(SKAction.repeatForever(SKAction.sequence([act,act.reversed()])))
+            let wait = SKAction.wait(forDuration: 1.0)
+            gumi.run(SKAction.repeatForever(SKAction.sequence([gumi.moveLeft,wait,gumi.moveRight,wait])))
         }
         
     }

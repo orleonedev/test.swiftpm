@@ -46,7 +46,7 @@ extension GameScene {
     
     private func setUpGame() {
         self.gameLogic.setUpGame()
-        self.backgroundColor = SKColor.gray
+        self.backgroundColor = SKColor.init(red: 0, green: 0.01, blue: 0.1, alpha: 0.9)
         
         // TODO: Customize!
     }
