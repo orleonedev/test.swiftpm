@@ -37,9 +37,7 @@ struct ContentView: View {
             HStack(alignment: .center, spacing: GMUnit) {
                
                 Button {
-                    if currentGameState == .mainScreen {
-                        withAnimation { shared.changeHue() }
-                    }
+                    leftPressed()
                 } label: {
                 Image(systemName: "arrowtriangle.left.fill")
                     .resizable()
@@ -64,9 +62,7 @@ struct ContentView: View {
            .background(Circle().foregroundColor(shared.secondary).frame(width: GMUnit, height: GMUnit, alignment: .center))
                 
                 Button {
-                    if currentGameState == .mainScreen {
-                        withAnimation { shared.changeHue() }
-                    }
+                    rightPressed()
                 } label: {
                 Image(systemName: "arrowtriangle.right.fill")
                     .resizable()
@@ -88,6 +84,7 @@ struct ContentView: View {
         
     }
     
+    
     func startPreparation(){
         print("- Preparing...")
         self.currentGameState = .preparation
@@ -97,5 +94,32 @@ struct ContentView: View {
         print("- Starting the game...")
         self.currentGameState = .playing
     }
+    
+    func leftPressed(){
+        switch currentGameState {
+        case .mainScreen:
+            withAnimation { shared.changeHue() }
+        case .preparation:
+            self.currentGameState = .mainScreen
+        case .playing:
+            break
+        case .gameOver:
+            self.currentGameState = .mainScreen
+        }
+    }
+    
+    func rightPressed(){
+        switch currentGameState {
+        case .mainScreen:
+            withAnimation { shared.changeHue() }
+        case .preparation:
+            self.currentGameState = .mainScreen
+        case .playing:
+            break
+        case .gameOver:
+            self.currentGameState = .mainScreen
+        }
+    }
 }
+
 

@@ -15,6 +15,19 @@ class GameLogic: ObservableObject {
     var wants: [String] = []
     var hates: [String] = []
     
+    func initializeGame(){
+        
+        ingredients = ["🍎","🍐","🍊","🍋","🍌"]
+        wants = []
+        hates = []
+        
+        for _ in 0...2 {
+            let index = Int.random(in: 0...ingredients.count-1)
+            wants.append(ingredients.remove(at: index))
+        }
+        hates.append(contentsOf: ingredients)
+    }
+    
     // Function responsible to set up the game before it starts.
     func setUpGame() {
         
