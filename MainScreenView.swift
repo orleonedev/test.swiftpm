@@ -15,7 +15,7 @@ struct MainScreenView: View {
     var gumiScene: MenuScene {
         let scene = MenuScene()
         scene.size = CGSize(width: displayWidth, height: displayHeight)
-        scene.scaleMode = .aspectFit
+        scene.scaleMode = .aspectFill
         
         return scene
     }
@@ -30,14 +30,14 @@ struct MainScreenView: View {
             VStack(alignment: .center, spacing: GMUnit/5){
                 
                 Text("GumiEats!")
-                    .font(.custom("boh", size: GMUnit/1.5))
+                    .font(.custom("VT323-Regular", size: GMUnit))
                     .fontWeight(.black)
                     .foregroundColor(.white)
                 
                 Spacer()
                 
                 Text("Press \(Image(systemName: "star.fill")) to start")
-                    .font(.custom("Subhead", size: GMUnit/3))
+                    .font(.custom("VT323-Regular", size: GMUnit/2))
                     .foregroundColor(.white)
                     .opacity(op)
                     .onAppear{
@@ -49,7 +49,7 @@ struct MainScreenView: View {
                     }
                 
                 Text("Press \(Image(systemName: "arrowtriangle.left.fill")) or \(Image(systemName: "arrowtriangle.right.fill")) to change GumiCom colors!")
-                    .font(.custom("Subhead", size: GMUnit/5))
+                    .font(.custom("VT323-Regular", size: GMUnit/4))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .font(.subheadline)
