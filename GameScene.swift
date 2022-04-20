@@ -9,6 +9,13 @@ import Foundation
 import SpriteKit
 import SwiftUI
 
+struct PhysicsCategory {
+    static let none     : UInt32 = 0
+    static let all      : UInt32 = UInt32.max
+    static let player   : UInt32 = 0b1
+    static let ingredients : UInt32 = 0b10
+}
+
 class GameScene: SKScene {
     
     var gumi: Gumi = Gumi()
@@ -30,6 +37,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.setUpGame()
         self.setUpPhysicsWorld()
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -86,12 +94,13 @@ extension GameScene {
         gumi.name = "gumi"
         self.addChild(gumi)
         
+        startIngredientCycle()
         
     }
     
     private func setUpPhysicsWorld() {
         physicsWorld.gravity = CGVector(dx: 0, dy: -0.9)
-        
+        physicsWorld.contactDelegate = self
     }
     
     private func restartGame() {
@@ -99,23 +108,51 @@ extension GameScene {
     }
     
     private func newIngredient(at position: CGPoint) {
-        let newIngredient = SKShapeNode(circleOfRadius: 25)
-        newIngredient.name = "asteroid"
+        let newIngredient = SKShapeNode(circleOfRadius: GMUnit/2)
+        newIngredient.name = "ingredient"
         newIngredient.fillColor = SKColor.red
         newIngredient.strokeColor = SKColor.black
         newIngredient.position = position
+        newIngredient.physicsBody = SKPhysicsBody(circleOfRadius: GMUnit/2)
+        newIngredient.physicsBody?.categoryBitMask = PhysicsCategory.ingredients
+        newIngredient.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        newIngredient.physicsBody?.collisionBitMask = PhysicsCategory.player
         addChild(newIngredient)
     }
     
     private func randomIngredientPosition() -> CGPoint {
-        let initialX: CGFloat = 25
-        let finalX: CGFloat = self.frame.width - 25
-
-        let positionX = CGFloat.random(in: initialX...finalX)
-        let positionY = frame.height - GMUnit
+        var positionX: CGFloat
+        let positionY: CGFloat = (scene?.frame.maxY ?? 0.0) - GMUnit
+        
+        switch Int.random(in: 0...2){
+        case 1:
+            positionX = (scene?.frame.midX ?? 0.0)
+        case 2:
+            positionX = (scene?.frame.midX ?? 0.0) + GMUnit*1.4
+        default:
+            positionX = (scene?.frame.midX ?? 0.0) - GMUnit*1.4
+        }
+        
         
         return CGPoint(x: positionX, y: positionY)
     }
+    
+    private func createIngredient() {
+        let ingredientPosition = self.randomIngredientPosition()
+        newIngredient(at: ingredientPosition)
+    }
+    
+    func startIngredientCycle() {
+        let createIngredientAction = SKAction.run(createIngredient)
+        let waitAction = SKAction.wait(forDuration: 3.0)
+        
+        let createAndWaitAction = SKAction.sequence([createIngredientAction, waitAction])
+        let ingredientCycleAction = SKAction.repeatForever(createAndWaitAction)
+        
+        run(ingredientCycleAction)
+    }
+    
+    
 }
 
 
@@ -176,6 +213,26 @@ extension GameScene {
     
     private func registerScore() {
         // TODO: Customize!
+    }
+    
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        let firstBody: SKPhysicsBody = contact.bodyA
+        let secondBody: SKPhysicsBody = contact.bodyB
+        
+        if let node = firstBody.node, node.name == "ingredient" {
+            gameLogic.score(points: 5)
+            node.removeFromParent()
+        }
+        
+        if let node = secondBody.node, node.name == "ingredient" {
+            gameLogic.score(points: 5)
+            node.removeFromParent()
+        }
     }
     
 }

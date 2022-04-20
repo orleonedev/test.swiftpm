@@ -56,7 +56,7 @@ class GameLogic: ObservableObject {
     func setUpGame() {
         
         // TODO: Customize!
-        
+        self.currentGumiPosition = .center
         self.currentScore = 0
         self.sessionDuration = 45
         

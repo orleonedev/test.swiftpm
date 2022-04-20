@@ -60,6 +60,10 @@ class Gumi: SKSpriteNode {
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
         
+        self.physicsBody?.categoryBitMask = PhysicsCategory.player
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.ingredients
+        self.physicsBody?.collisionBitMask = PhysicsCategory.ingredients
+        
         
     }
     
