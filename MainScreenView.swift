@@ -30,8 +30,7 @@ struct MainScreenView: View {
             VStack(alignment: .center, spacing: GMUnit/5){
                 
                 Text("GumiEats!")
-                    .font(Font.custom("VT323-Regular.ttf", size: GMUnit))
-                   // .font(.custom("boh", size: GMUnit/1.5))
+                    .font(.custom("boh", size: GMUnit/1.5))
                     .fontWeight(.black)
                     .foregroundColor(.white)
                 
