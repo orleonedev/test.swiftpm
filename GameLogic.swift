@@ -5,6 +5,7 @@
 //  Created by Oreste Leone on 16/04/22.
 //
 import Foundation
+import UIKit
 
 class GameLogic: ObservableObject {
     
@@ -14,18 +15,41 @@ class GameLogic: ObservableObject {
     var ingredients: [String] = ["🍎","🍐","🍊","🍋","🍌"]
     var wants: [String] = []
     var hates: [String] = []
+    var randomColor: UIColor {
+        switch Int.random(in: 0...3){
+        case 0:
+            return .green
+        case 1:
+            return .white
+        case 2:
+            return .red
+        default:
+            return .yellow
+        }
+    }
+    var gumiColor: UIColor = .white
+    
+    
+    var currentGumiPosition: GumiPositions = .center
+    
+    func changeGumiPosition(_ to: GumiPositions){
+        currentGumiPosition = to
+    }
     
     func initializeGame(){
         
         ingredients = ["🍎","🍐","🍊","🍋","🍌"]
+        var temp: [String] = ingredients
         wants = []
         hates = []
         
         for _ in 0...2 {
-            let index = Int.random(in: 0...ingredients.count-1)
-            wants.append(ingredients.remove(at: index))
+            let index = Int.random(in: 0...temp.count-1)
+            wants.append(temp.remove(at: index))
         }
-        hates.append(contentsOf: ingredients)
+        hates.append(contentsOf: temp)
+        
+        gumiColor = randomColor
     }
     
     // Function responsible to set up the game before it starts.
@@ -34,7 +58,7 @@ class GameLogic: ObservableObject {
         // TODO: Customize!
         
         self.currentScore = 0
-        self.sessionDuration = 0
+        self.sessionDuration = 45
         
         self.isGameOver = false
     }
@@ -51,10 +75,10 @@ class GameLogic: ObservableObject {
     }
     
     // Keep tracks of the duration of the current session in number of seconds
-    @Published var sessionDuration: TimeInterval = 0
+    @Published var sessionDuration: TimeInterval = 45
     
-    func increaseSessionTime(by timeIncrement: TimeInterval) {
-        self.sessionDuration = self.sessionDuration + timeIncrement
+    func decreaseSessionTime(by timeIncrement: TimeInterval) {
+        self.sessionDuration = self.sessionDuration - timeIncrement
     }
     
     func restartGame() {
@@ -72,5 +96,6 @@ class GameLogic: ObservableObject {
             self.isGameOver = true
         }
     }
+    
     
 }

@@ -12,46 +12,19 @@ struct GameOverView: View {
     
     @Binding var currentGameState: GameState
     var sharedPalette: ColorPalette = ColorPalette.sharedPalette
+    var gameLogic: GameLogic = GameLogic.shared
     
     var body: some View {
         ZStack {
-            Color.gray.edgesIgnoringSafeArea(.all)
+            Color.init(red: 0.0, green: 0.01, blue: 0.1, opacity: 0.9).edgesIgnoringSafeArea(.all)
+            Text("Pizza Rating: \(gameLogic.currentScore)")
+                .foregroundColor(.white)
+                .fontWeight(.heavy)
             
-            VStack(alignment: .center) {
-                Spacer()
-                
-                Button {
-                    withAnimation { self.backToMainScreen() }
-                } label: {
-                    Image(systemName: "arrow.backward")
-                        .foregroundColor(.black)
-                        .font(.title)
-                }
-                .background(Circle().foregroundColor(sharedPalette.secondary).frame(width: GMUnit, height: GMUnit, alignment: .center))
-                
-                Spacer()
-                
-                Button {
-                    withAnimation { self.restartGame() }
-                } label: {
-                    Image(systemName: "arrow.clockwise")
-                        .foregroundColor(.black)
-                        .font(.title)
-                }
-                .background(Circle().foregroundColor(sharedPalette.secondary).frame(width: GMUnit, height: GMUnit, alignment: .center))
-                
-                Spacer()
-            }
+            
         }
         
     }
     
-    private func backToMainScreen() {
-        self.currentGameState = .mainScreen
-    }
-    
-    private func restartGame() {
-        self.currentGameState = .playing
-    }
 }
 

@@ -22,6 +22,11 @@ var GMUnit: CGFloat {screenWidth/5.0}
 var displayWidth: CGFloat {screenWidth-(screenWidth/8)}
 var displayHeight: CGFloat {screenHeight-(screenHeight/4)}
 
+enum GumiPositions {
+    case left, center, right
+}
+
+
 class ColorPalette:ObservableObject{
     
     static let sharedPalette: ColorPalette = ColorPalette()

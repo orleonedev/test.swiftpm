@@ -11,9 +11,20 @@ import SwiftUI
 
 class GameScene: SKScene {
     
-    var gumi: SKSpriteNode = SKSpriteNode(texture: SKTexture(imageNamed: "GumiDx"), color: .blue, size: CGSize(width: 64.0,height: 64.0))
+    var gumi: Gumi = Gumi()
     var gameLogic: GameLogic =  GameLogic.shared
     var lastUpdate: TimeInterval = 0
+    var timeLabel: SKLabelNode = SKLabelNode(text: String(format: "%.d", 45))
+    var gumiPos: CGPoint {
+        switch gameLogic.currentGumiPosition {
+        case .left:
+            return CGPoint(x: (scene?.frame.minX ?? 0.0) + GMUnit, y: (scene?.frame.minY ?? 0.0) + GMUnit)
+        case .center:
+            return CGPoint(x: (scene?.frame.midX ?? 0.0), y: (scene?.frame.minY ?? 0.0) + GMUnit)
+        case .right:
+            return CGPoint(x: (scene?.frame.maxX ?? 0.0) - GMUnit, y: (scene?.frame.minY ?? 0.0) + GMUnit)
+        }
+    }
     
     override func didMove(to view: SKView) {
         self.setUpGame()
@@ -34,8 +45,9 @@ class GameScene: SKScene {
         // Calculates how much time has passed since the last update
         let timeElapsedSinceLastUpdate = currentTime - self.lastUpdate
         // Increments the length of the game session at the game logic
-        self.gameLogic.increaseSessionTime(by: timeElapsedSinceLastUpdate)
-        
+        self.gameLogic.decreaseSessionTime(by: timeElapsedSinceLastUpdate)
+        timeLabel.text = String(format: "%.d", Int(gameLogic.sessionDuration))
+        gumi.position = gumiPos
         self.lastUpdate = currentTime
     }
     
@@ -47,8 +59,23 @@ extension GameScene {
     private func setUpGame() {
         self.gameLogic.setUpGame()
         self.backgroundColor = SKColor.init(red: 0, green: 0.01, blue: 0.1, alpha: 0.9)
+        print("SCENE Love: \(gameLogic.wants)")
+        print("SCENE Hates: \(gameLogic.hates)")
         
-        // TODO: Customize!
+        
+        timeLabel.text = String(format: "%.d", Int(gameLogic.sessionDuration))
+        timeLabel.fontSize = GMUnit/2
+        timeLabel.horizontalAlignmentMode = .left
+        timeLabel.verticalAlignmentMode = .top
+        timeLabel.position = CGPoint(x: (scene?.frame.minX ?? 0.0) + GMUnit/8, y: (scene?.frame.maxY ?? 0.0) - GMUnit/8)
+        self.addChild(timeLabel)
+        
+        gumi.colorize(gameLogic.gumiColor)
+        gumi.position = gumiPos
+        gumi.name = "gumi"
+        self.addChild(gumi)
+        
+        
     }
     
     private func setUpPhysicsWorld() {
@@ -68,7 +95,7 @@ extension GameScene {
         
         // TODO: Customize!
         
-        self.gameLogic.finishTheGame()
+        //self.gameLogic.finishTheGame()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -97,13 +124,11 @@ extension GameScene {
      **/
     
     var isGameOver: Bool {
-        // TODO: Customize!
-        
-        // Did you reach the time limit?
-        // Are the health points depleted?
-        // Did an enemy cross a position it should not have crossed?
-        
-        return gameLogic.isGameOver
+        var returnable = false
+        if gameLogic.sessionDuration < 0 {
+            returnable = true
+        }
+        return returnable
     }
     
     private func finishGame() {

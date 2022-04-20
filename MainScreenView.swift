@@ -12,7 +12,6 @@ import SpriteKit
 struct MainScreenView: View {
     
     @Binding var currentGameState: GameState
-    var gameTitle: String = "Title"
     var gumiScene: MenuScene {
         let scene = MenuScene()
         scene.size = CGSize(width: displayWidth, height: displayHeight)
@@ -31,7 +30,8 @@ struct MainScreenView: View {
             VStack(alignment: .center, spacing: GMUnit/5){
                 
                 Text("GumiEats!")
-                    .font(.custom("boh", size: GMUnit/1.5))
+                    .font(Font.custom("VT323-Regular.ttf", size: GMUnit))
+                   // .font(.custom("boh", size: GMUnit/1.5))
                     .fontWeight(.black)
                     .foregroundColor(.white)
                 

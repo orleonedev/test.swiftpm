@@ -16,19 +16,17 @@ class WhatToEatScene: SKScene {
     var gumi: Gumi? = Gumi()
     
     
+    
     override func didMove(to view: SKView) {
         self.backgroundColor = SKColor.init(red: 0, green: 0.01, blue: 0.1, alpha: 0.9)
         
         if let gumi = gumi {
-            
+            gumi.colorize(gameLogic.gumiColor)
             gumi.name = "gumi"
-            gumi.physicsBody = SKPhysicsBody(circleOfRadius: GMUnit/2)
-            gumi.physicsBody?.affectedByGravity = false
             gumi.position = view.center
             self.addChild(gumi)
             
         }
-        gameLogic.initializeGame()
         
         for i in 0..<gameLogic.wants.count {
             let fruit = SKLabelNode(text: gameLogic.wants[i])
@@ -48,5 +46,9 @@ class WhatToEatScene: SKScene {
             self.addChild(fruit)
         }
         
+        print("PREP Love: \(gameLogic.wants)")
+        print("PREP Hates: \(gameLogic.hates)")
     }
+    
+    
 }

@@ -25,7 +25,6 @@ class Gumi: SKSpriteNode {
     
     var isMovingLeft: Bool = false {
         didSet{
-            print(isMovingLeft)
             if isMovingLeft {
                 self.run(leftAnim)
             }
@@ -68,7 +67,10 @@ class Gumi: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    func colorize(_ color: UIColor){
+        self.color = color
+        self.colorBlendFactor = 0.5
+    }
     
     
     

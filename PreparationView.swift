@@ -23,11 +23,14 @@ struct PreparationView: View {
         return scene
     }
     
+    
     var body: some View{
         ZStack(alignment: .top) {
             // View that presents the game scene
             SpriteView(scene: prepScene)
             
+        }.onAppear{
+            gameLogic.initializeGame()
         }
     }
     

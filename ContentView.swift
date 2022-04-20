@@ -48,10 +48,7 @@ struct ContentView: View {
             .background(Circle().foregroundColor(shared.secondary).frame(width: GMUnit, height: GMUnit, alignment: .center))
                 
                Button {
-               if currentGameState == .mainScreen {
-                   withAnimation { self.startPreparation() }
-               }
-               
+                   centerPressed()
            } label: {
                Image(systemName: "star.fill")
                    .resizable()
@@ -102,7 +99,7 @@ struct ContentView: View {
         case .preparation:
             self.currentGameState = .mainScreen
         case .playing:
-            break
+            GameLogic.shared.changeGumiPosition(.left)
         case .gameOver:
             self.currentGameState = .mainScreen
         }
@@ -115,7 +112,20 @@ struct ContentView: View {
         case .preparation:
             self.currentGameState = .mainScreen
         case .playing:
-            break
+            GameLogic.shared.changeGumiPosition(.right)
+        case .gameOver:
+            self.currentGameState = .mainScreen
+        }
+    }
+    
+    func centerPressed(){
+        switch currentGameState {
+        case .mainScreen:
+            withAnimation { self.startPreparation() }
+        case .preparation:
+            withAnimation { self.startGame() }
+        case .playing:
+            GameLogic.shared.changeGumiPosition(.center)
         case .gameOver:
             self.currentGameState = .mainScreen
         }

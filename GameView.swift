@@ -16,6 +16,7 @@ struct GameView: View {
     
     var gameScene: GameScene {
         let scene = GameScene()
+        scene.size = CGSize(width: displayWidth, height: displayHeight)
         scene.scaleMode = .aspectFill
         
         return scene
@@ -25,6 +26,7 @@ struct GameView: View {
         ZStack(alignment: .top) {
             // View that presents the game scene
             SpriteView(scene: self.gameScene)
+            
             
         }.onChange(of: gameLogic.isGameOver) { _ in
             if gameLogic.isGameOver {
