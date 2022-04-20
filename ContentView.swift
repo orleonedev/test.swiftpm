@@ -41,7 +41,7 @@ struct ContentView: View {
                 } label: {
                 Image(systemName: "arrowtriangle.left.fill")
                     .resizable()
-                    .frame(width: GMUnit/2, height: GMUnit/2, alignment: .center)
+                    .frame(width: GMUnit/1.8, height: GMUnit/1.8, alignment: .center)
                     
             }
             .foregroundColor(.white.opacity(0.5))
@@ -52,7 +52,7 @@ struct ContentView: View {
            } label: {
                Image(systemName: "star.fill")
                    .resizable()
-                   .frame(width: GMUnit/2, height: GMUnit/2, alignment: .center)
+                   .frame(width: GMUnit/1.6, height: GMUnit/1.6, alignment: .center)
                    
            }
            .foregroundColor(.white.opacity(0.5))
@@ -63,7 +63,7 @@ struct ContentView: View {
                 } label: {
                 Image(systemName: "arrowtriangle.right.fill")
                     .resizable()
-                    .frame(width: GMUnit/2, height: GMUnit/2, alignment: .center)
+                    .frame(width: GMUnit/1.8, height: GMUnit/1.8, alignment: .center)
                     
             }
             .foregroundColor(.white.opacity(0.5))
