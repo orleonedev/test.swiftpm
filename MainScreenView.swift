@@ -14,8 +14,9 @@ struct MainScreenView: View {
     @Binding var currentGameState: GameState
     var gumiScene: MenuScene {
         let scene = MenuScene()
+        
         scene.size = CGSize(width: displayWidth, height: displayHeight)
-        scene.scaleMode = .aspectFill
+        scene.scaleMode = .aspectFit
         
         return scene
     }
