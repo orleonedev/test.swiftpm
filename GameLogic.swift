@@ -12,7 +12,7 @@ class GameLogic: ObservableObject {
     // Single instance of the class
     static let shared: GameLogic = GameLogic()
     
-    var ingredients: [String] = ["🍎","🍐","🍊","🍋","🍌"]
+    var ingredients: [String] = ["Apple","Avocado","Broccoli","Carote","Cheese","Donuts","Egg","Fungo","Sweet","Tomato"]
     var wants: [String] = []
     var hates: [String] = []
     var randomColor: UIColor {
@@ -38,7 +38,6 @@ class GameLogic: ObservableObject {
     
     func initializeGame(){
         
-        ingredients = ["🍎","🍐","🍊","🍋","🍌"]
         var temp: [String] = ingredients
         wants = []
         hates = []
@@ -47,7 +46,12 @@ class GameLogic: ObservableObject {
             let index = Int.random(in: 0...temp.count-1)
             wants.append(temp.remove(at: index))
         }
-        hates.append(contentsOf: temp)
+        
+        for _ in 0...1 {
+            let index = Int.random(in: 0...temp.count-1)
+            hates.append(temp.remove(at: index))
+        }
+        
         
         gumiColor = randomColor
     }

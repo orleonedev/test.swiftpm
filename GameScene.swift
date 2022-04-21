@@ -34,6 +34,10 @@ class GameScene: SKScene {
         }
     }
     
+    var timeSpan: TimeInterval = 2.0
+    var waiting: TimeInterval = 2.0
+    var numberof: Int = 0
+    
     override func didMove(to view: SKView) {
         self.setUpGame()
         self.setUpPhysicsWorld()
@@ -42,7 +46,7 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         
-        // ...
+        
         
         // If the game over condition is met, the game will finish
         if self.isGameOver { self.finishGame() }
@@ -55,6 +59,16 @@ class GameScene: SKScene {
         let timeElapsedSinceLastUpdate = currentTime - self.lastUpdate
         // Increments the length of the game session at the game logic
         self.gameLogic.decreaseSessionTime(by: timeElapsedSinceLastUpdate)
+        waiting -= timeElapsedSinceLastUpdate
+        if waiting < 0 {
+            createIngredient()
+            print(numberof) // sono circa 50 buoni , una media tra 50 e 15 (32,5)*50 = 1625 
+            if timeSpan > 0.5 {
+                timeSpan -= 0.1
+            }
+            waiting = timeSpan
+        }
+        
         scoreLabel.text = String(format: "%.6d", gameLogic.currentScore)
         timeLabel.text = String(format: "%.d", Int(gameLogic.sessionDuration))
         gumi.position = gumiPos
@@ -94,8 +108,6 @@ extension GameScene {
         gumi.name = "gumi"
         self.addChild(gumi)
         
-        startIngredientCycle()
-        
     }
     
     private func setUpPhysicsWorld() {
@@ -108,16 +120,20 @@ extension GameScene {
     }
     
     private func newIngredient(at position: CGPoint) {
-        let newIngredient = SKShapeNode(circleOfRadius: GMUnit/2)
-        newIngredient.name = "ingredient"
-        newIngredient.fillColor = SKColor.red
-        newIngredient.strokeColor = SKColor.black
+        let ingredientName = gameLogic.ingredients.randomElement()
+        
+        let newIngredient = SKSpriteNode(texture: SKTexture(imageNamed: ingredientName ?? "Cheese"), color: UIColor.green, size: CGSize(width: GMUnit/2, height: GMUnit/2))
+        newIngredient.name = ingredientName
         newIngredient.position = position
-        newIngredient.physicsBody = SKPhysicsBody(circleOfRadius: GMUnit/2)
+        newIngredient.physicsBody = SKPhysicsBody(circleOfRadius: GMUnit/4)
         newIngredient.physicsBody?.categoryBitMask = PhysicsCategory.ingredients
         newIngredient.physicsBody?.contactTestBitMask = PhysicsCategory.player
         newIngredient.physicsBody?.collisionBitMask = PhysicsCategory.player
         addChild(newIngredient)
+        
+        if !gameLogic.hates.contains(ingredientName!){
+            numberof += 1
+        }
     }
     
     private func randomIngredientPosition() -> CGPoint {
@@ -142,54 +158,10 @@ extension GameScene {
         newIngredient(at: ingredientPosition)
     }
     
-    func startIngredientCycle() {
-        let createIngredientAction = SKAction.run(createIngredient)
-        let waitAction = SKAction.wait(forDuration: 3.0)
-        
-        let createAndWaitAction = SKAction.sequence([createIngredientAction, waitAction])
-        let ingredientCycleAction = SKAction.repeatForever(createAndWaitAction)
-        
-        run(ingredientCycleAction)
-    }
-    
-    
 }
-
-
-// MARK: - Handle Player Inputs
-extension GameScene {
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // TODO: Customize!
-        
-        //self.gameLogic.finishTheGame()
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // TODO: Customize!
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // TODO: Customize!
-    }
-    
-}
-
 
 // MARK: - Game Over Condition
 extension GameScene {
-    
-    /**
-     * Implement the Game Over condition.
-     * Remember that an arcade game always ends! How will the player eventually lose?
-     *
-     * Some examples of game over conditions are:
-     * - The time is over!
-     * - The player health is depleated!
-     * - The enemies have completed their goal!
-     * - The screen is full!
-     **/
     
     var isGameOver: Bool {
         var returnable = false
@@ -200,8 +172,6 @@ extension GameScene {
     }
     
     private func finishGame() {
-        
-        // TODO: Customize!
         
         gameLogic.isGameOver = true
     }
@@ -224,13 +194,36 @@ extension GameScene: SKPhysicsContactDelegate {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
         
-        if let node = firstBody.node, node.name == "ingredient" {
-            gameLogic.score(points: 5)
+        if let node = firstBody.node ,node.name != "gumi" {
+            
+            if gameLogic.wants.contains(node.name ?? ""){
+                
+                gameLogic.score(points: 50)
+            }
+            else if gameLogic.hates.contains(node.name ?? ""){
+                
+                gameLogic.score(points: -75)
+            }else{
+                
+                gameLogic.score(points: 15)
+            }
+            
             node.removeFromParent()
         }
         
-        if let node = secondBody.node, node.name == "ingredient" {
-            gameLogic.score(points: 5)
+        if let node = secondBody.node, node.name != "gumi" {
+            if gameLogic.wants.contains(node.name ?? ""){
+                
+                gameLogic.score(points: 50)
+            }
+            else if gameLogic.hates.contains(node.name ?? ""){
+                
+                gameLogic.score(points: -75)
+            }else{
+                
+                gameLogic.score(points: 15)
+            }
+            
             node.removeFromParent()
         }
     }
