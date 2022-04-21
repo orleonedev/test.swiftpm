@@ -18,7 +18,7 @@ enum GameState {
 var screenWidth: CGFloat { UIScreen.main.bounds.size.width }
 var screenHeight: CGFloat { UIScreen.main.bounds.size.height }
 
-var GMUnit: CGFloat {screenWidth/5.0}
+var GMUnit: CGFloat {screenWidth/6}
 var displayWidth: CGFloat {screenWidth-(screenWidth/8)}
 var displayHeight: CGFloat {screenHeight-(screenHeight/4)}
 

@@ -10,7 +10,7 @@ struct ContentView: View {
     
     var body: some View {
         
-        VStack(alignment: .center, spacing: GMUnit/2){
+        VStack(alignment: .center, spacing: GMUnit/3){
            
            ZStack{
                switch currentGameState {
@@ -34,7 +34,7 @@ struct ContentView: View {
            }
            .frame(width: displayWidth, height: displayHeight, alignment: .center)
            
-            HStack(alignment: .center, spacing: GMUnit) {
+            HStack(alignment: .center, spacing: GMUnit*1.3) {
                
                 Button {
                     leftPressed()
@@ -74,7 +74,7 @@ struct ContentView: View {
        }
         .background(
             Rectangle()
-            .frame(width: screenWidth, height: screenHeight+20, alignment: .center)
+            .frame(width: screenWidth, height: screenHeight+GMUnit, alignment: .center)
             .foregroundColor(shared.primary)
         )
         
