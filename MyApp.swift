@@ -1,5 +1,4 @@
 import SwiftUI
-import MyFonts
 
 @main
 struct MyApp: App {
