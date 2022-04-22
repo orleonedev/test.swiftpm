@@ -12,7 +12,7 @@ enum GameState {
     case mainScreen
     case preparation
     case playing
-    case gameOver
+    case cooking
 }
 
 var screenWidth: CGFloat { UIScreen.main.bounds.size.width }

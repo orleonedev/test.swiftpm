@@ -15,6 +15,10 @@ class GameLogic: ObservableObject {
     var ingredients: [String] = ["Apple","Avocado","Broccoli","Carote","Cheese","Donuts","Egg","Fungo","Sweet","Tomato"]
     var wants: [String] = []
     var hates: [String] = []
+    
+    var hateGot: [String] = []
+    var wantsGot: [String] = []
+    var multiplier: Double = 2.0
     var randomColor: UIColor {
         switch Int.random(in: 0...3){
         case 0:
@@ -36,6 +40,9 @@ class GameLogic: ObservableObject {
         currentGumiPosition = to
     }
     
+    
+    var stopCooking: Bool = false
+    
     func initializeGame(){
         
         var temp: [String] = ingredients
@@ -52,19 +59,22 @@ class GameLogic: ObservableObject {
             hates.append(temp.remove(at: index))
         }
         
-        
+        print("LOGIC Love: \(wants)")
+        print("LOGIC Hates: \(hates)")
         gumiColor = randomColor
     }
     
     // Function responsible to set up the game before it starts.
     func setUpGame() {
-        
+        print("SETUP GAME")
         // TODO: Customize!
         self.currentGumiPosition = .center
         self.currentScore = 0
         self.sessionDuration = 45
-        
-        self.isGameOver = false
+        self.wantsGot = []
+        self.hateGot = []
+        self.ingredientCatchOver = false
+        self.stopCooking = false
     }
     
     // Keeps track of the current score of the player
@@ -76,6 +86,22 @@ class GameLogic: ObservableObject {
         // TODO: Customize!
         
         self.currentScore = self.currentScore + points
+        if self.currentScore < 0 { self.currentScore = 0}
+    }
+    
+    @Published var finalScore: Int = 0
+    
+    func calculateFinalScore(distance: CGFloat) -> Int{
+        return self.currentScore // da sistemare Accuracy positivo se poco cotto, negativo se troppo cotto bisogna puntare ad essere vicino a zero
+    }
+    
+    var highestScore: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: "HighScore")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "HighScore")
+        }
     }
     
     // Keep tracks of the duration of the current session in number of seconds
@@ -93,11 +119,11 @@ class GameLogic: ObservableObject {
     }
     
     // Game Over Conditions
-    @Published var isGameOver: Bool = false
+    @Published var ingredientCatchOver: Bool = false
     
-    func finishTheGame() {
-        if self.isGameOver == false {
-            self.isGameOver = true
+    func finishCatching() {
+        if self.ingredientCatchOver == false {
+            self.ingredientCatchOver = true
         }
     }
     

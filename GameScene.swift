@@ -36,7 +36,6 @@ class GameScene: SKScene {
     
     var timeSpan: TimeInterval = 2.0
     var waiting: TimeInterval = 2.0
-    var numberof: Int = 0
     
     override func didMove(to view: SKView) {
         self.setUpGame()
@@ -49,7 +48,7 @@ class GameScene: SKScene {
         
         
         // If the game over condition is met, the game will finish
-        if self.isGameOver { self.finishGame() }
+        if self.isGameOver { self.finishCatching() }
         
         // The first time the update function is called we must initialize the
         // lastUpdate variable
@@ -62,7 +61,7 @@ class GameScene: SKScene {
         waiting -= timeElapsedSinceLastUpdate
         if waiting < 0 {
             createIngredient()
-            print(numberof) // sono circa 50 buoni , una media tra 50 e 15 (32,5)*50 = 1625 
+            //print(numberof) // sono circa 50 buoni , una media tra 50 e 15 (32,5)*50 = 1625
             if timeSpan > 0.5 {
                 timeSpan -= 0.1
             }
@@ -81,7 +80,7 @@ class GameScene: SKScene {
 extension GameScene {
     
     private func setUpGame() {
-        self.gameLogic.setUpGame()
+        //self.gameLogic.setUpGame()
         self.backgroundColor = SKColor.init(red: 0, green: 0.01, blue: 0.1, alpha: 0.9)
         print("SCENE Love: \(gameLogic.wants)")
         print("SCENE Hates: \(gameLogic.hates)")
@@ -122,18 +121,16 @@ extension GameScene {
     private func newIngredient(at position: CGPoint) {
         let ingredientName = gameLogic.ingredients.randomElement()
         
-        let newIngredient = SKSpriteNode(texture: SKTexture(imageNamed: ingredientName ?? "Cheese"), color: UIColor.green, size: CGSize(width: GMUnit/2, height: GMUnit/2))
+        let newIngredient = SKSpriteNode(texture: SKTexture(imageNamed: ingredientName ?? "Cheese"), color: UIColor.green, size: CGSize(width: GMUnit/1.5, height: GMUnit/1.5))
         newIngredient.name = ingredientName
         newIngredient.position = position
-        newIngredient.physicsBody = SKPhysicsBody(circleOfRadius: GMUnit/4)
+        newIngredient.physicsBody = SKPhysicsBody(circleOfRadius: GMUnit/3)
         newIngredient.physicsBody?.categoryBitMask = PhysicsCategory.ingredients
         newIngredient.physicsBody?.contactTestBitMask = PhysicsCategory.player
         newIngredient.physicsBody?.collisionBitMask = PhysicsCategory.player
         addChild(newIngredient)
         
-        if !gameLogic.hates.contains(ingredientName!){
-            numberof += 1
-        }
+        
     }
     
     private func randomIngredientPosition() -> CGPoint {
@@ -171,9 +168,9 @@ extension GameScene {
         return returnable
     }
     
-    private func finishGame() {
+    private func finishCatching() {
         
-        gameLogic.isGameOver = true
+        gameLogic.ingredientCatchOver = true
     }
     
 }

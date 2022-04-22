@@ -31,6 +31,7 @@ struct PreparationView: View {
             
         }.onAppear{
             gameLogic.initializeGame()
+            gameLogic.setUpGame()
         }
     }
     

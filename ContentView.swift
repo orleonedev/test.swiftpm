@@ -25,8 +25,8 @@ struct ContentView: View {
                        .environmentObject(gameLogic)
                        .environmentObject(colorPalette)
                
-               case .gameOver:
-                   GameOverView(currentGameState: $currentGameState)
+               case .cooking:
+                   CookingView(currentGameState: $currentGameState)
                        .environmentObject(gameLogic)
                        .environmentObject(colorPalette)
                }
@@ -100,8 +100,8 @@ struct ContentView: View {
             self.currentGameState = .mainScreen
         case .playing:
             GameLogic.shared.changeGumiPosition(.left)
-        case .gameOver:
-            self.currentGameState = .mainScreen
+        case .cooking:
+            break //self.currentGameState = .mainScreen
         }
     }
     
@@ -113,8 +113,8 @@ struct ContentView: View {
             self.currentGameState = .mainScreen
         case .playing:
             GameLogic.shared.changeGumiPosition(.right)
-        case .gameOver:
-            self.currentGameState = .mainScreen
+        case .cooking:
+            break //self.currentGameState = .mainScreen
         }
     }
     
@@ -126,8 +126,14 @@ struct ContentView: View {
             withAnimation { self.startGame() }
         case .playing:
             GameLogic.shared.changeGumiPosition(.center)
-        case .gameOver:
-            self.currentGameState = .mainScreen
+        case .cooking:
+            if !GameLogic.shared.stopCooking {
+                GameLogic.shared.stopCooking = true
+            }
+            else {
+                self.currentGameState = .mainScreen
+            }
+            
         }
     }
 }

@@ -28,26 +28,22 @@ struct GameView: View {
             SpriteView(scene: self.gameScene)
             
             
-        }.onChange(of: gameLogic.isGameOver) { _ in
-            if gameLogic.isGameOver {
-                
-                /** # PRO TIP!
-                 * You can experiment by adding other types of animations here before presenting the game over screen.
-                 */
+        }.onChange(of: gameLogic.ingredientCatchOver) { _ in
+            if gameLogic.ingredientCatchOver {
                 
                 withAnimation {
-                    self.presentGameOverScreen()
+                    self.presentCookingScreen()
                 }
             }
         }
         .onAppear {
-            gameLogic.restartGame()
+//            gameLogic.restartGame()
         }
     }
     private func presentMainScreen() {
         self.currentGameState = .mainScreen
     }
-    private func presentGameOverScreen() {
-        self.currentGameState = .gameOver
+    private func presentCookingScreen() {
+        self.currentGameState = .cooking
     }
 }
